@@ -1,12 +1,14 @@
 from rest_framework import serializers
-from api.models import students
+from apiV2.models import students
 
 
 
 class studentSerializers(serializers.Serializer):
 	id = serializers.IntegerField(read_only=True)
 	name = serializers.CharField(max_length=100)
-	email = serializers.EmailField()
+	age=serializers.IntegerField()
+	phone_number=serializers.IntegerField()
+	father_name=serializers.CharField(max_length=100)
 
 
 	def create(self,valided_data):
@@ -21,14 +23,16 @@ class studentSerializers(serializers.Serializer):
 	#object level validations
 	def validate(self,data):
 		name =data.get('name')
-		email = data.get('email')
-		if len(email)== 0:
+		phone_number = data.get('phone_number')
+		if len(name)==0 or len(str(phone_number))== 0:
 			raise serializers.ValidationError('enter the valid length')
 		return data
 
 	def update(self,instance, validated_data):
 		instance.name = validated_data.get('name')
-		instance.email = validated_data.get('email')
+		instance.age = validated_data.get('age')
+		instance.father_name = validated_data.get('father_name')
+		instance.phone_number = validated_data.get('phone_number')
 
 		instance.save()
 		return instance
@@ -37,7 +41,7 @@ class studentSerializers(serializers.Serializer):
 
 	class Meta:
 		model = students
-		fields = ['id', 'name', 'email']
+		fields = ['id']
 
 
 

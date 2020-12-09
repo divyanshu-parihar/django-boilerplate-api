@@ -1,11 +1,16 @@
-from django.shortcuts import render
-from django.http import HttpResponse,JsonResponse
-from api.serializers import studentSerializers
-from .models import students
-from rest_framework.renderers import JSONRenderer
 import io
-from rest_framework.parsers import JSONParser
+
+from django.http import HttpResponse, JsonResponse
+# Create your views here.
+from django.shortcuts import render
 from django.views.decorators.csrf import csrf_exempt
+from rest_framework.parsers import JSONParser
+from rest_framework.renderers import JSONRenderer
+
+from .models import students
+from .serializers import studentSerializers
+
+
 # Create your views here.
 # see all the students in the data base
 def homeApi(request):
@@ -40,8 +45,8 @@ def updateStudent(request):
 		json_data = request.body
 		stream = io.BytesIO(json_data)
 		python_data = JSONParser().parse(stream)
-		python_data['email']
-		check = students.objects.filter(email = python_data['email']).exists()
+		phone_number = python_data['phone_number']
+		check = students.objects.filter(phone_number = phone_number).exists()
 		if check:
 			return JsonResponse({'msg':'student already exist'})
 		serializer= studentSerializers(data=python_data)
@@ -94,18 +99,18 @@ def updateStudent(request):
 	## partial update can not be done with present database because 
 	# all the fiels are required till now .
 
-	if request.method == 'PATCH':
-		stream = io.BytesIO(request.body)
-		python_data = JSONParser().parse(stream)
-		id= python_data.get('id')
+	# if request.method == 'PATCH':
+	# 	stream = io.BytesIO(request.body)
+	# 	python_data = JSONParser().parse(stream)
+	# 	id= python_data.get('id')
 
-		check = students.objects.filter(id=id).exists()
-		if check == False:
-			return JsonResponse({'msg':'student not found!'})
+	# 	check = students.objects.filter(id=id).exists()
+	# 	if check == False:
+	# 		return JsonResponse({'msg':'student not found!'})
 
-		student = students.objects.get(id=id)
-		serializer = studentSerializers(student,data=python_data,partial=True)
-		if serializer.is_valid():
-			serializer.save()
-			return JsonResponse({'msg':'request data patched successfully'})
-		return JsonResponse({'msg':'request failed! check passed data'})
+	# 	student = students.objects.get(id=id)
+	# 	serializer = studentSerializers(student,data=python_data,partial=True)
+	# 	if serializer.is_valid():
+	# 		serializer.save()
+	# 		return JsonResponse({'msg':'request data patched successfully'})
+	# 	return JsonResponse({'msg':'request failed! check passed data'})
