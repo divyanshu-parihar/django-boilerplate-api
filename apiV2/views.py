@@ -10,7 +10,6 @@ from .models import students
 from .serializers import studentSerializers
 
 
-
 # Create your views here.
 # see all the students in the data base
 def homeApi(request):
