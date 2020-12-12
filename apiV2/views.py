@@ -23,7 +23,7 @@ class homeApi(APIView):
 		if serializer.is_valid():
 			serializer.save()
 			return Response({'msg':serializer.data})
-		return Response({'msg':serializer.errors})
+		return Response({'msg':serializer.errors},status=status.HTTP_204_NO_CONTENT)
 	def put(self,request,pk,format= None):
 		id = pk
 		student = students.objects.get(id= id)
