@@ -19,6 +19,6 @@ json_data=json.dumps(data)
 
 
 # r= requests.delete(url= url, data= json_data)
-r= requests.post(headers= header,url= url,data = data)
+r= requests.get(headers= header,url= url)
 data = r.json()
 print(data) 

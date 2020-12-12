@@ -1,24 +1,34 @@
 from django.shortcuts import render
 from rest_framework.response import Response
-from rest_framework.decorators import api_view
 from .models import students
 from .serializers import studentSerializers
+from rest_framework.views import APIView
+from rest_framework import status
+# <----------------CLASS BASED APIVIEW -------------->
 
-#<------------------ function based view----------------->
-
-
-
-
-# which is handled by imported in rest_framework Response
-# @api_view(['GET','POST']) # note --> by default GET is passed as list .
-# #api_view imported to see everything in the browser!
-# def homeApi(request): #normal view 
-# 	if request.method == 'POST':
-# 		return Response({'msg':'THIS IS A POST REQUEST','data':request.data})
-	
-# 	return Response({'msg':'THIS IS A GET REQUEST','data':request.data})
-#<------------------ function based view ENDING----------------->
-
-#<------------------ CRUD FUNCTIONALITY----------------->
-def homeApi(request):
-		return Response({'msg':'hello world!'})
+class homeApi(APIView):
+	def get(self,request,pk=None,format=None):
+		id = pk
+		if id is not None:
+			student = students.objects.get(id= id)
+			serialzer = studentSerializers(student)
+			return Response(serialzer.data)
+		else:
+			student = students.objects.all()
+			serializer = studentSerializers(student ,many = True)
+			return Response(serializer.data)
+	def post(self,request,format=None):
+		data = request.data
+		serializer = studentSerializers(data=data)
+		if serializer.is_valid():
+			serializer.save()
+			return Response({'msg':serializer.data})
+		return Response({'msg':serializer.errors})
+	def put(self,request,pk,format= None):
+		id = pk
+		student = students.objects.get(id= id)
+		serializer = studentSerializers(student,data= request.data)
+		if serializer.is_valid():
+			serializer.save()
+			return Response({"msg":'complete data updated'})
+		return Response(serializer.errors)
