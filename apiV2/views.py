@@ -20,23 +20,5 @@ from .serializers import studentSerializers
 #<------------------ function based view ENDING----------------->
 
 #<------------------ CRUD FUNCTIONALITY----------------->
-@api_view(['GET','POST','PUT','DELETE'])
 def homeApi(request):
-	if request.method == 'GET':
-		id = request.data.get('id')
-		if id is not None:
-			student = students.objects.all(id= id)
-			serialzer = studentSerializers(student)
-			return Response(serialzer.data)
-		else:
-			student = students.objects.all()
-			serializer = studentSerializers(student ,many = True)
-			return Response(serializer.data)
-	
-	if request.method == 'POST':
-		data = request.data
-		serializer = studentSerializers(data=data)
-		if serializer.is_valid():
-			serializer.save()
-			return Response({'msg':serializer.data})
-		return Response({'msg':serializer.errors})
+		return Response({'msg':'hello world!'})
