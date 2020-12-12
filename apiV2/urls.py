@@ -1,7 +1,7 @@
 from django.urls import path
-from .views import homeApi
+from .views import get_student,change_student
 
 urlpatterns = [
-    path('',homeApi.as_view()),
-    path('user/<int:pk>/',homeApi.as_view()),
+    path('',get_student.as_view()),
+    path('<int:pk>/',change_student.as_view()),
 ]
