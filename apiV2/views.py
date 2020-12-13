@@ -1,33 +1,13 @@
-from django.shortcuts import render
 from .models import students
 from .serializers import studentSerializers
-from rest_framework import status
-#<-----------Generic model serialier and mixins------------>
-from rest_framework.generics import GenericAPIView
-from rest_framework.mixins import ListModelMixin, CreateModelMixin, UpdateModelMixin, DestroyModelMixin, RetrieveModelMixin
+from rest_framework.generics import ListCreateAPIView,RetrieveUpdateDestroyAPIView
 
-class get_student(GenericAPIView,ListModelMixin,CreateModelMixin):
+
+class studentList(ListCreateAPIView):#only change the inherited class it will haange everyting by itserlf.
 	queryset = students.objects.all()
 	serializer_class = studentSerializers
 
 
-	def get(self, request,*args,**kwargs):
-		return self.list(request,*args,**kwargs)
-	
-	def post(self,request,*args,**kwargs):
-		return self.create(request ,*args,**kwargs)
-
-
-# <_________all below these pk value as a argument.you can change it._____________>
-class change_student(GenericAPIView,RetrieveModelMixin,UpdateModelMixin,DestroyModelMixin):
+class studentUpdate(RetrieveUpdateDestroyAPIView):#only change the inherited class it will haange everyting by itserlf.
 	queryset = students.objects.all()
 	serializer_class = studentSerializers
-	
-	def get(self,request,*args,**kwargs):
-		return self.retrieve(request ,*args,**kwargs)
-	
-	def put(self,request,*args,**kwargs):
-		return self.update(request ,*args,**kwargs)
-
-	def delete(self,request,*args,**kwargs):
-		return self.destroy(request ,*args,**kwargs)
