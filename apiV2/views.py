@@ -1,13 +1,10 @@
 from .models import students
 from .serializers import studentSerializers
-from rest_framework.generics import ListCreateAPIView,RetrieveUpdateDestroyAPIView
-
-
-class studentList(ListCreateAPIView):#only change the inherited class it will haange everyting by itserlf.
+from rest_framework.viewsets import ModelViewSet
+from rest_framework.authentication import BasicAuthentication
+from rest_framework.permissions import IsAuthenticated
+class studentModelViewSet(ModelViewSet):
 	queryset = students.objects.all()
 	serializer_class = studentSerializers
-
-
-class studentUpdate(RetrieveUpdateDestroyAPIView):#only change the inherited class it will haange everyting by itserlf.
-	queryset = students.objects.all()
-	serializer_class = studentSerializers
+	# authentication_classes = [BasicAuthentication]
+	# permission_classes = [IsAuthenticated]
