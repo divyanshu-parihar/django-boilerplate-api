@@ -1,5 +1,5 @@
 from django.urls import path,include
-from .views import studentModelViewSet
+from .views import studentReadOnlyModelViewSet
 from rest_framework.routers import DefaultRouter
 
 
@@ -7,7 +7,7 @@ from rest_framework.routers import DefaultRouter
 router = DefaultRouter()
 
 
-router.register('student',studentModelViewSet,basename='student')
+router.register('student',studentReadOnlyModelViewSet,basename='student')
 urlpatterns = [
     path('',include(router.urls)),
 ]
